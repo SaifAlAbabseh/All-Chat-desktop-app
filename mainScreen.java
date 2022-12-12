@@ -467,7 +467,7 @@ public class mainScreen extends javax.swing.JFrame {
     private void goToEditProfileScreen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goToEditProfileScreen
         // TODO add your handling code here:
     	try {
-    		Desktop.getDesktop().browse(new URI("http://localhost/all_chat/uploadPic.php?username="+username+"&password="+password+"&temp=javaToWeb1090"));
+    		Desktop.getDesktop().browse(new URI("http://localhost/All_Chat/uploadPic.php?username="+username+"&password="+otherMethods.getMd5(password)+"&temp=javaToWeb1090"));
     	} catch (IOException e) {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, ""+e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);

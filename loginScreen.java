@@ -482,7 +482,7 @@ public class loginScreen extends javax.swing.JFrame {
             try {
                 Connection conn = DriverManager.getConnection(DBInfo.db, DBInfo.user, DBInfo.pass);
                 Statement stmt = conn.createStatement();
-                String query = "SELECT * FROM users WHERE BINARY username='" + username + "' AND password='" + password + "'";
+                String query = "SELECT * FROM users WHERE BINARY username='" + username + "' AND password='" + otherMethods.getMd5(password) + "'";
                 ResultSet result=stmt.executeQuery(query);
                 if(result.next()){
                     dispose();

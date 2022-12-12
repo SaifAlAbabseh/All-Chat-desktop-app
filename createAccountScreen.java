@@ -670,7 +670,7 @@ public class createAccountScreen extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null,"Username is already used.","Invalid",JOptionPane.WARNING_MESSAGE);
             }
             else{
-                String query2="INSERT INTO users VALUES ('"+username+"','"+password+"','defaultUser','0')";
+                String query2="INSERT INTO users VALUES ('"+username+"','"+otherMethods.getMd5(password)+"','defaultUser','0')";
                 stmt.executeUpdate(query2);
                 restart();
                 JOptionPane.showMessageDialog(null,"Successfully created your account.","Successful",JOptionPane.PLAIN_MESSAGE);
