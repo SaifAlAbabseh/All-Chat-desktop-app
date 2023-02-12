@@ -21,9 +21,35 @@ public class createAccountScreen extends javax.swing.JFrame {
     int tempFocused1 = 1;
     int tempFocused2 = 1;
     int tempFocused3 = 1;
+    int tempFocused4 = 1;
     int tempLastText1 = 1;
     int tempLastText2 = 1;
     int tempLastText3 = 1;
+    int tempLastText4 = 1;
+    private String captchaText;
+    
+    private void showSignUpCaptchaText(){
+        captchaText = generateSignupCaptcha();
+        captchaTextView.setText(captchaText);
+    }
+    
+    private String generateSignupCaptcha(){
+        int lengthOfCaptcha = (int)((Math.random() * 3) + 4);
+
+        final String alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        final String numbers = "0123456789";
+        final String[] chars = {alphabets, numbers};
+
+        int alphaOrNumber = (int)(Math.random() * 2);
+        int whatPos = (int)(Math.random() * chars[alphaOrNumber].length());
+        String result = "";
+        for(int i = 1; i <= lengthOfCaptcha; i++){
+            result += chars[alphaOrNumber].charAt(whatPos);
+            alphaOrNumber = (int)(Math.random() * 2);
+            whatPos = (int)(Math.random() * chars[alphaOrNumber].length());
+        }
+        return result;
+    }
 
     private void setIcon() {
     	setIconImage(new ImageIcon(getClass().getResource("icon.png")).getImage());
@@ -32,6 +58,7 @@ public class createAccountScreen extends javax.swing.JFrame {
         initComponents();
         setIcon();
         setLocationRelativeTo(null);
+        showSignUpCaptchaText();
         jPasswordField1.setEchoChar('\u0000');
         jPasswordField2.setEchoChar('\u0000');
     }
@@ -56,14 +83,15 @@ public class createAccountScreen extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jPasswordField1 = new javax.swing.JPasswordField();
-        jPasswordField2 = new javax.swing.JPasswordField();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        captchaTextView = new javax.swing.JLabel();
+        jPasswordField2 = new javax.swing.JPasswordField();
+        captchaTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(664, 638));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102), 3));
@@ -232,31 +260,6 @@ public class createAccountScreen extends javax.swing.JFrame {
             }
         });
 
-        jPasswordField2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jPasswordField2.setForeground(java.awt.Color.blue);
-        jPasswordField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jPasswordField2.setText("Confirm Password");
-        jPasswordField2.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.blue, 2));
-        jPasswordField2.setFocusable(false);
-        jPasswordField2.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jPasswordField2fieldFocus(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jPasswordField2lostFocusField(evt);
-            }
-        });
-        jPasswordField2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jPasswordField2enterField(evt);
-            }
-        });
-        jPasswordField2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jPasswordField2fieldTyped(evt);
-            }
-        });
-
         jLabel2.setBackground(java.awt.Color.lightGray);
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -305,22 +308,85 @@ public class createAccountScreen extends javax.swing.JFrame {
             }
         });
 
+        captchaTextView.setBackground(new java.awt.Color(0, 0, 153));
+        captchaTextView.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
+        captchaTextView.setForeground(new java.awt.Color(0, 51, 255));
+        captchaTextView.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        captchaTextView.setText("Captcha");
+        captchaTextView.setOpaque(true);
+
+        jPasswordField2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jPasswordField2.setForeground(java.awt.Color.blue);
+        jPasswordField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jPasswordField2.setText("Confirm Password");
+        jPasswordField2.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.blue, 2));
+        jPasswordField2.setFocusable(false);
+        jPasswordField2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jPasswordField2fieldFocus(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jPasswordField2lostFocusField(evt);
+            }
+        });
+        jPasswordField2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jPasswordField2enterField(evt);
+            }
+        });
+        jPasswordField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jPasswordField2fieldTyped(evt);
+            }
+        });
+
+        captchaTextField.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        captchaTextField.setForeground(java.awt.Color.blue);
+        captchaTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        captchaTextField.setText("Enter Code");
+        captchaTextField.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.blue, 2));
+        captchaTextField.setFocusable(false);
+        captchaTextField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                captchaTextFieldfieldFocus(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                captchaTextFieldlostFocusField(evt);
+            }
+        });
+        captchaTextField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                captchaTextFieldenterField(evt);
+            }
+        });
+        captchaTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                captchaTextFieldfieldTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(captchaTextView, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(191, 191, 191))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(106, 106, 106)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPasswordField1)
-                    .addComponent(jTextField1)
-                    .addComponent(jPasswordField2, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(captchaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jPasswordField1)
+                        .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPasswordField2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)))
                 .addGap(164, 164, 164))
         );
         jPanel1Layout.setVerticalGroup(
@@ -328,18 +394,22 @@ public class createAccountScreen extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(78, 78, 78)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
+                .addGap(14, 14, 14)
                 .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addGap(18, 18, 18)
+                .addComponent(captchaTextView, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(captchaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(63, 63, 63)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addGap(19, 19, 19))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -392,7 +462,7 @@ public class createAccountScreen extends javax.swing.JFrame {
 
     private void jPanel4goToLink(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4goToLink
         try {
-            Desktop.getDesktop().browse(new URI("http://allchat.lovestoblog.com/"));
+            Desktop.getDesktop().browse(new URI("http://localhost/All_Chat/"));
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -410,155 +480,65 @@ public class createAccountScreen extends javax.swing.JFrame {
 
     private void jTextField1fieldFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1fieldFocus
         // TODO add your handling code here:
-        if (evt.getSource() == jTextField1) {
-            jTextField1.setBorder(new LineBorder(Color.blue, 5));
-            if (jTextField1.getText().trim().equals("") || tempFocused1 == 1 || tempLastText1 == 1) {
-                jTextField1.setText("");
-                jTextField1.setForeground(Color.black);
-            }
-        } else if (evt.getSource() == jPasswordField1) {
-            jPasswordField1.setBorder(new LineBorder(Color.blue, 5));
-            if (jPasswordField1.getText().trim().equals("") || tempFocused2 == 1 || tempLastText2 == 1) {
-                jPasswordField1.setText("");
-                jPasswordField1.setForeground(Color.black);
-                jPasswordField1.setEchoChar('\u2022');
-            }
+        jTextField1.setBorder(new LineBorder(Color.blue, 5));
+        if (jTextField1.getText().trim().equals("") || tempFocused1 == 1 || tempLastText1 == 1) {
+            jTextField1.setText("");
+            jTextField1.setForeground(Color.black);
         }
     }//GEN-LAST:event_jTextField1fieldFocus
 
     private void jTextField1lostFocusField(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1lostFocusField
         // TODO add your handling code here:
-        if (evt.getSource() == jTextField1) {
-            jTextField1.setBorder(new LineBorder(Color.blue, 2));
-            if (jTextField1.getText().trim().equals("")) {
-                jTextField1.setText("Username");
-                jTextField1.setForeground(Color.BLUE);
-                tempLastText1 = 1;
-            }
-        } else if (evt.getSource() == jPasswordField1) {
-            jPasswordField1.setBorder(new LineBorder(Color.blue, 2));
-            if (jPasswordField1.getText().trim().equals("")) {
-                jPasswordField1.setText("Password");
-                jPasswordField1.setForeground(Color.BLUE);
-                tempLastText2 = 1;
-                jPasswordField1.setEchoChar('\u0000');
-            }
-        }
+	    jTextField1.setBorder(new LineBorder(Color.blue, 2));
+	    if (jTextField1.getText().trim().equals("")) {
+	        jTextField1.setText("Username");
+	        jTextField1.setForeground(Color.BLUE);
+	        tempLastText1 = 1;
+	    }
     }//GEN-LAST:event_jTextField1lostFocusField
 
     private void jTextField1enterField(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField1enterField
         // TODO add your handling code here:
-        if (evt.getSource() == jTextField1) {
-            jTextField1.setFocusable(true);
-
-        } else if (evt.getSource() == jPasswordField1) {
-            jPasswordField1.setFocusable(true);
-
-        }
+        jTextField1.setFocusable(true);
     }//GEN-LAST:event_jTextField1enterField
 
     private void jTextField1fieldTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1fieldTyped
         // TODO add your handling code here:
-        if (evt.getSource() == jTextField1) {
-            tempFocused1 = 0;
-            tempLastText1 = 0;
-        } else if (evt.getSource() == jPasswordField1) {
-            tempFocused2 = 0;
-            tempLastText2 = 0;
-        }
+        tempFocused1 = 0;
+        tempLastText1 = 0;
     }//GEN-LAST:event_jTextField1fieldTyped
 
     private void jPasswordField1fieldFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPasswordField1fieldFocus
         // TODO add your handling code here:
-        if (evt.getSource() == jTextField1) {
-            jTextField1.setBorder(new LineBorder(Color.blue, 5));
-            if (jTextField1.getText().trim().equals("") || tempFocused1 == 1 || tempLastText1 == 1) {
-                jTextField1.setText("");
-                jTextField1.setForeground(Color.black);
-            }
-        } else if (evt.getSource() == jPasswordField1) {
-            jPasswordField1.setBorder(new LineBorder(Color.blue, 5));
-            if (jPasswordField1.getText().trim().equals("") || tempFocused2 == 1 || tempLastText2 == 1) {
-                jPasswordField1.setText("");
-                jPasswordField1.setForeground(Color.black);
-                jPasswordField1.setEchoChar('\u2022');
-            }
-        }
+	    jPasswordField1.setBorder(new LineBorder(Color.blue, 5));
+	    if (jPasswordField1.getText().trim().equals("") || tempFocused2 == 1 || tempLastText2 == 1) {
+	        jPasswordField1.setText("");
+	        jPasswordField1.setForeground(Color.black);
+	        jPasswordField1.setEchoChar('\u2022');
+	    }
     }//GEN-LAST:event_jPasswordField1fieldFocus
 
     private void jPasswordField1lostFocusField(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPasswordField1lostFocusField
         // TODO add your handling code here:
-        if (evt.getSource() == jTextField1) {
-            jTextField1.setBorder(new LineBorder(Color.blue, 2));
-            if (jTextField1.getText().trim().equals("")) {
-                jTextField1.setText("Username");
-                jTextField1.setForeground(Color.BLUE);
-                tempLastText1 = 1;
-            }
-        } else if (evt.getSource() == jPasswordField1) {
-            jPasswordField1.setBorder(new LineBorder(Color.blue, 2));
-            if (jPasswordField1.getText().trim().equals("")) {
-                jPasswordField1.setText("Password");
-                jPasswordField1.setForeground(Color.BLUE);
-                tempLastText2 = 1;
-                jPasswordField1.setEchoChar('\u0000');
-            }
+        jPasswordField1.setBorder(new LineBorder(Color.blue, 2));
+        if (jPasswordField1.getText().trim().equals("")) {
+            jPasswordField1.setText("Password");
+            jPasswordField1.setForeground(Color.BLUE);
+            tempLastText2 = 1;
+            jPasswordField1.setEchoChar('\u0000');
         }
     }//GEN-LAST:event_jPasswordField1lostFocusField
 
     private void jPasswordField1enterField(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPasswordField1enterField
         // TODO add your handling code here:
-        if (evt.getSource() == jTextField1) {
-            jTextField1.setFocusable(true);
-
-        } else if (evt.getSource() == jPasswordField1) {
-            jPasswordField1.setFocusable(true);
-
-        }
+        jPasswordField1.setFocusable(true);
     }//GEN-LAST:event_jPasswordField1enterField
 
     private void jPasswordField1fieldTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordField1fieldTyped
         // TODO add your handling code here:
-        if (evt.getSource() == jTextField1) {
-            tempFocused1 = 0;
-            tempLastText1 = 0;
-        } else if (evt.getSource() == jPasswordField1) {
-            tempFocused2 = 0;
-            tempLastText2 = 0;
-        }
+        tempFocused2 = 0;
+        tempLastText2 = 0;
     }//GEN-LAST:event_jPasswordField1fieldTyped
-
-    private void jPasswordField2fieldFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPasswordField2fieldFocus
-        // TODO add your handling code here:
-        jPasswordField2.setBorder(new LineBorder(Color.blue, 5));
-        if (jPasswordField2.getText().trim().equals("") || tempFocused3 == 1 || tempLastText3 == 1) {
-            jPasswordField2.setText("");
-            jPasswordField2.setForeground(Color.black);
-            jPasswordField2.setEchoChar('\u2022');
-        }
-    }//GEN-LAST:event_jPasswordField2fieldFocus
-
-    private void jPasswordField2lostFocusField(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPasswordField2lostFocusField
-        // TODO add your handling code here:
-        jPasswordField2.setBorder(new LineBorder(Color.blue, 2));
-        if (jPasswordField2.getText().trim().equals("")) {
-            jPasswordField2.setText("Confirm Password");
-            jPasswordField2.setForeground(Color.BLUE);
-            tempLastText3 = 1;
-            jPasswordField2.setEchoChar('\u0000');
-        }
-    }//GEN-LAST:event_jPasswordField2lostFocusField
-
-    private void jPasswordField2enterField(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPasswordField2enterField
-        // TODO add your handling code here:
-        jPasswordField2.setFocusable(true);
-    }//GEN-LAST:event_jPasswordField2enterField
-
-    private void jPasswordField2fieldTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordField2fieldTyped
-        // TODO add your handling code here:
-        tempFocused3 = 0;
-        tempLastText3 = 0;
-    }//GEN-LAST:event_jPasswordField2fieldTyped
 
     private void enterGoBackButton(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_enterGoBackButton
         // TODO add your handling code here:
@@ -606,12 +586,12 @@ public class createAccountScreen extends javax.swing.JFrame {
         return temp;
     }
 
-    private boolean checkIfNotEmpty(String username, String pass, String cpass) {
+    private boolean checkIfNotEmpty(String username, String pass, String cpass, String captchaInput) {
         boolean temp=true;
-        if(!(jTextField1.getForeground()==Color.black && jPasswordField1.getForeground()==Color.black && jPasswordField2.getForeground()==Color.black)){
+        if(!(jTextField1.getForeground()==Color.black && jPasswordField1.getForeground()==Color.black && jPasswordField2.getForeground()==Color.black && captchaTextField.getForeground()==Color.black)){
             temp=false;
         }
-        if (!(username.trim().equals("") && pass.trim().equals("") && cpass.trim().equals(""))) {
+        if (!(username.trim().equals("") && pass.trim().equals("") && cpass.trim().equals("") && captchaInput.trim().equals(""))) {
             if(temp){
                 return true;
             }
@@ -688,12 +668,19 @@ public class createAccountScreen extends javax.swing.JFrame {
         String username = jTextField1.getText();
         String password = jPasswordField1.getText();
         String cPassword = jPasswordField2.getText();
+        String captchaUserInput = captchaTextField.getText();
 
-        if (checkIfNotEmpty(username, password, cPassword)) {
+        if (checkIfNotEmpty(username, password, cPassword, captchaUserInput)) {
             if (checkConfirmPassword(password, cPassword)) {
                 if(checkUsernameIfValid(username)){
                     if(checkPasswordIfValid(password)){
-                        succCreateAcc(username, password);
+                        if(captchaUserInput.equals(captchaText)) {
+                        	succCreateAcc(username, password);
+                        }
+                        else {
+                        	showSignUpCaptchaText();
+                        	JOptionPane.showMessageDialog(null,"Invalid captcha, try again","Invalid Input",JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                     else{
                         JOptionPane.showMessageDialog(null,"Check password requirements.","Invalid Input",JOptionPane.ERROR_MESSAGE);
@@ -721,6 +708,68 @@ public class createAccountScreen extends javax.swing.JFrame {
         String passReq="Password should not contain spaces , and it should be at least 8 characters in length and at most 16.";
         JOptionPane.showMessageDialog(null,passReq,"Password Requirements",JOptionPane.WARNING_MESSAGE);
     }//GEN-LAST:event_showPassReq
+
+    private void jPasswordField2fieldFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPasswordField2fieldFocus
+        // TODO add your handling code here:
+        jPasswordField2.setBorder(new LineBorder(Color.blue, 5));
+        if (jPasswordField2.getText().trim().equals("") || tempFocused3 == 1 || tempLastText3 == 1) {
+            jPasswordField2.setText("");
+            jPasswordField2.setForeground(Color.black);
+            jPasswordField2.setEchoChar('\u2022');
+        }
+    }//GEN-LAST:event_jPasswordField2fieldFocus
+
+    private void jPasswordField2lostFocusField(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPasswordField2lostFocusField
+        // TODO add your handling code here:
+    	jPasswordField2.setBorder(new LineBorder(Color.blue, 2));
+        if (jPasswordField2.getText().trim().equals("")) {
+            jPasswordField2.setText("Confirm Password");
+            jPasswordField2.setForeground(Color.BLUE);
+            tempLastText3 = 1;
+            jPasswordField2.setEchoChar('\u0000');
+        }
+    }//GEN-LAST:event_jPasswordField2lostFocusField
+
+    private void jPasswordField2enterField(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPasswordField2enterField
+        // TODO add your handling code here:
+    	jPasswordField2.setFocusable(true);
+    }//GEN-LAST:event_jPasswordField2enterField
+
+    private void jPasswordField2fieldTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordField2fieldTyped
+        // TODO add your handling code here:
+    	tempFocused3 = 0;
+    	tempLastText3 = 0;
+    }//GEN-LAST:event_jPasswordField2fieldTyped
+
+    private void captchaTextFieldfieldFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_captchaTextFieldfieldFocus
+        // TODO add your handling code here:
+    	captchaTextField.setBorder(new LineBorder(Color.blue, 5));
+        if (captchaTextField.getText().trim().equals("") || tempFocused4 == 1 || tempLastText4 == 1) {
+        	captchaTextField.setText("");
+        	captchaTextField.setForeground(Color.black);
+        }
+    }//GEN-LAST:event_captchaTextFieldfieldFocus
+
+    private void captchaTextFieldlostFocusField(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_captchaTextFieldlostFocusField
+        // TODO add your handling code here:
+    	captchaTextField.setBorder(new LineBorder(Color.blue, 2));
+        if (captchaTextField.getText().trim().equals("")) {
+        	captchaTextField.setText("Enter Code");
+        	captchaTextField.setForeground(Color.BLUE);
+            tempLastText4 = 1;
+        }
+    }//GEN-LAST:event_captchaTextFieldlostFocusField
+
+    private void captchaTextFieldenterField(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_captchaTextFieldenterField
+        // TODO add your handling code here:
+    	captchaTextField.setFocusable(true);
+    }//GEN-LAST:event_captchaTextFieldenterField
+
+    private void captchaTextFieldfieldTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_captchaTextFieldfieldTyped
+        // TODO add your handling code here:
+    	tempFocused4 = 0;
+    	tempLastText4 = 0;
+    }//GEN-LAST:event_captchaTextFieldfieldTyped
 
     /**
      * @param args the command line arguments
@@ -758,6 +807,8 @@ public class createAccountScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField captchaTextField;
+    private javax.swing.JLabel captchaTextView;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;

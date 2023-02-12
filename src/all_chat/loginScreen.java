@@ -327,7 +327,7 @@ public class loginScreen extends javax.swing.JFrame {
 
     private void goToLink(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_goToLink
         try {
-            Desktop.getDesktop().browse(new URI("http://allchat.lovestoblog.com/"));
+            Desktop.getDesktop().browse(new URI("http://localhost/All_Chat/"));
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
