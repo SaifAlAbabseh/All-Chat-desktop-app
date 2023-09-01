@@ -88,7 +88,7 @@ public class mainScreen extends javax.swing.JFrame {
 	private void loadIMG() {
 		Image image = null;
 		String lastIMG = getIMG();
-		String imgurl = "http://localhost/All_Chat/Extra/styles/images/" + lastIMG + ".png";
+		String imgurl = "http://localhost/All_Chat/Extra/styles/images/users%20images/" + lastIMG + ".png";
 		try {
 			URL url = new URL(imgurl);
 			image = ImageIO.read(url);
@@ -142,7 +142,7 @@ public class mainScreen extends javax.swing.JFrame {
 
 				JLabel pic = new JLabel();
 				pic.setPreferredSize(new Dimension(50, 50));
-				String imgurl = "http://localhost/All_Chat/Extra/styles/images/" + result.getString(3) + ".png";
+				String imgurl = "http://localhost/All_Chat/Extra/styles/images/users%20images/" + result.getString(3) + ".png";
 				Image image = null;
 				try {
 					URL url = new URL(imgurl);

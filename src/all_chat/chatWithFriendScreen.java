@@ -257,7 +257,7 @@ public class chatWithFriendScreen extends javax.swing.JFrame {
 	private void loadFriendProfile() {
 		Image image = null;
 		String lastIMG = get();
-		String imgurl = "http://localhost/All_Chat/Extra/styles/images/" + lastIMG + ".png";
+		String imgurl = "http://localhost/All_Chat/Extra/styles/images/users%20images/" + lastIMG + ".png";
 		try {
 			URL url = new URL(imgurl);
 			image = ImageIO.read(url);

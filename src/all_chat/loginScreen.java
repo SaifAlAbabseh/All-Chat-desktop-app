@@ -6,8 +6,10 @@ package all_chat;
 
 import java.awt.Color;
 import java.awt.Desktop;
+import java.io.IOException;
 import java.sql.Statement;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -460,8 +462,12 @@ public class loginScreen extends javax.swing.JFrame {
 
     private void goToSU(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goToSU
         // TODO add your handling code here:
-        dispose();
-        new createAccountScreen().setVisible(true);
+        try {
+			Desktop.getDesktop().browse(new URI("http://localhost/All_Chat"));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, "Error!", "Error", JOptionPane.ERROR_MESSAGE);
+		}
     }//GEN-LAST:event_goToSU
 
     private boolean checkIfNotEmpty(String username, String password) {
