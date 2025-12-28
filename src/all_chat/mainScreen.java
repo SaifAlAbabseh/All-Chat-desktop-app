@@ -88,7 +88,7 @@ public class mainScreen extends javax.swing.JFrame {
 	private void loadIMG() {
 		Image image = null;
 		String lastIMG = getIMG();
-		String imgurl = "http://localhost/All_Chat/Extra/styles/images/users%20images/" + lastIMG + ".png";
+		String imgurl = "http://localhost/" + Common.siteName + "/Extra/styles/images/users%20images/" + lastIMG + ".png";
 		try {
 			URL url = new URL(imgurl);
 			image = ImageIO.read(url);
@@ -142,7 +142,7 @@ public class mainScreen extends javax.swing.JFrame {
 
 				JLabel pic = new JLabel();
 				pic.setPreferredSize(new Dimension(50, 50));
-				String imgurl = "http://localhost/All_Chat/Extra/styles/images/users%20images/" + result.getString(3) + ".png";
+				String imgurl = "http://localhost/" + Common.siteName + "/Extra/styles/images/users%20images/" + result.getString(3) + ".png";
 				Image image = null;
 				try {
 					URL url = new URL(imgurl);
@@ -467,7 +467,7 @@ public class mainScreen extends javax.swing.JFrame {
     private void goToEditProfileScreen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goToEditProfileScreen
         // TODO add your handling code here:
     	try {
-    		Desktop.getDesktop().browse(new URI("http://localhost/All_Chat/uploadPic.php?username="+username+"&password="+otherMethods.getMd5(password)+"&temp=javaToWeb1090"));
+    		Desktop.getDesktop().browse(new URI("http://localhost/" + Common.siteName + "/uploadPic.php?username="+username+"&password="+otherMethods.getMd5(password)+"&temp=javaToWeb1090"));
     	} catch (IOException e) {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, ""+e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);

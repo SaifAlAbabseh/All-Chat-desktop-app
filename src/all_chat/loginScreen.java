@@ -329,7 +329,7 @@ public class loginScreen extends javax.swing.JFrame {
 
     private void goToLink(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_goToLink
         try {
-            Desktop.getDesktop().browse(new URI("http://localhost/All_Chat/"));
+            Desktop.getDesktop().browse(new URI("http://localhost/" + Common.siteName + "/"));
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -463,7 +463,7 @@ public class loginScreen extends javax.swing.JFrame {
     private void goToSU(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goToSU
         // TODO add your handling code here:
         try {
-			Desktop.getDesktop().browse(new URI("http://localhost/All_Chat"));
+			Desktop.getDesktop().browse(new URI("http://localhost/" + Common.siteName));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, "Error!", "Error", JOptionPane.ERROR_MESSAGE);

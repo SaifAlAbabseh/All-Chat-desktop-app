@@ -1,4 +1,5 @@
 package all_chat;
+
 public class mainClass {
 	public static void main(String[] args) {
 		startApp();

@@ -257,7 +257,7 @@ public class chatWithFriendScreen extends javax.swing.JFrame {
 	private void loadFriendProfile() {
 		Image image = null;
 		String lastIMG = get();
-		String imgurl = "http://localhost/All_Chat/Extra/styles/images/users%20images/" + lastIMG + ".png";
+		String imgurl = "http://localhost/" + Common.siteName + "/Extra/styles/images/users%20images/" + lastIMG + ".png";
 		try {
 			URL url = new URL(imgurl);
 			image = ImageIO.read(url);
@@ -558,7 +558,7 @@ public class chatWithFriendScreen extends javax.swing.JFrame {
 				Connection conn = DriverManager.getConnection(DBInfo.db, DBInfo.user, DBInfo.pass);
 				Statement stmt = conn.createStatement();
 				String encodedMessage = URLEncoder.encode(message.trim(), "UTF-8");
-				String query = "INSERT INTO " + tableName + " VALUES ('" + username + "','" + encodedMessage + "','"
+				String query = "INSERT INTO " + tableName + "(fromwho, message, pos) VALUES ('" + username + "','" + encodedMessage + "','"
 						+ (lastMessagesIndex + 1) + "')";
 				stmt.executeUpdate(query);
 				stmt.close();
