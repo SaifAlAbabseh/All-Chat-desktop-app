@@ -23,6 +23,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -37,7 +40,7 @@ public class chatWithFriendScreen extends javax.swing.JFrame {
 	String friendAva = "0";
 	String tableName = "";
 	int lastMessagesIndex = 0;
-	private Timer t;
+	private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(5);
 
 	private void setIcon() {
 		setIconImage(new ImageIcon(getClass().getResource("icon.png")).getImage());
@@ -57,15 +60,10 @@ public class chatWithFriendScreen extends javax.swing.JFrame {
 		jLabel2.setText(friend);
 		loadFriendProfile();
 		loadMessages();
-		t = new Timer(1000, new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				loadFriendProfile();
-				loadLatestMessage();
-			}
-		});
-		t.start();
+		scheduler.scheduleWithFixedDelay(() -> {
+			loadFriendProfile();
+			loadLatestMessage();
+        }, 0, 1, TimeUnit.SECONDS);
 	}
 
 	private String getTableName() {
@@ -242,7 +240,7 @@ public class chatWithFriendScreen extends javax.swing.JFrame {
 				}
 			} else {
 				dispose();
-				t.stop();
+				scheduler.shutdown();
 				new mainScreen(username, password).setVisible(true);
 			}
 			stmt.close();
@@ -257,7 +255,7 @@ public class chatWithFriendScreen extends javax.swing.JFrame {
 	private void loadFriendProfile() {
 		Image image = null;
 		String lastIMG = get();
-		String imgurl = "http://localhost/" + Common.siteName + "/Extra/styles/images/users%20images/" + lastIMG + ".png";
+		String imgurl = DBInfo.siteName + "Extra/styles/images/users_images/" + lastIMG + ".png";
 		try {
 			URL url = new URL(imgurl);
 			image = ImageIO.read(url);
@@ -640,7 +638,7 @@ public class chatWithFriendScreen extends javax.swing.JFrame {
 	private void jButton1GoBackToMainScreen(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton1GoBackToLoginScreen
 		// TODO add your handling code here:
 		dispose();
-		t.stop();
+		scheduler.shutdown();
 		new mainScreen(username, password).setVisible(true);
 	}// GEN-LAST:event_jButton1GoBackToLoginScreen
 

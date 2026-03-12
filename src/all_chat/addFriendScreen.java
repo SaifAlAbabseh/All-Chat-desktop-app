@@ -10,6 +10,10 @@
 package all_chat;
 
 import java.awt.Color;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -311,36 +315,27 @@ public class addFriendScreen extends javax.swing.JFrame {
     			jLabel2.setForeground(Color.red);
     		}
     		else {
-        		
+    			String msg = "";
         		try {
-        			Connection conn = DriverManager.getConnection(DBInfo.db, DBInfo.user, DBInfo.pass);
-        			Statement stmt = conn.createStatement();
-        			String query="SELECT * FROM users WHERE BINARY username='"+fUsername+"'";
-        			ResultSet result=stmt.executeQuery(query);
-        			if(result.next()) {
-        				String query2="SELECT * FROM friends WHERE BINARY user1='"+username+"' AND BINARY user2='"+fUsername+"' OR BINARY user1='"+fUsername+"' AND BINARY user2='"+username+"'";
-        				ResultSet result2=stmt.executeQuery(query2);
-        				if(result2.next()) {
-        					jLabel2.setText("Already a friend.");
-        	    			jLabel2.setForeground(Color.red);
-        				}
-        				else {
-        					String query3="INSERT INTO friends VALUES ('"+username+"','"+fUsername+"')";
-        					stmt.executeUpdate(query3);
-        					String tablename=""+username+""+fUsername;
-        					String query4="CREATE TABLE "+tablename+"(fromwho varchar(1000) , message varchar(1000),pos varchar(1000))";
-        					stmt.executeUpdate(query4);
-        					jLabel2.setText("Successfully Added.");
-            				jLabel2.setForeground(Color.green);
-            				jTextField1.setText("");
-        				}
-        			}
-        			else {
-        				jLabel2.setText("Username is not valid.");
-        				jLabel2.setForeground(Color.red);
-        			}
-        			stmt.close();
-        			conn.close();
+        			String link=DBInfo.siteName+"Mobile/addFriend.php?check=fromMobile1090&username="+username+"&password="+otherMethods.getMd5(password)+"&friendUsername="+fUsername;
+                    try{
+                        URL url = new URL(link);
+                        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                        con.setRequestMethod("GET");
+                        con.setRequestProperty("User-Agent", "User-Agent");
+                        int responseCode = con.getResponseCode();
+                        if(responseCode==HttpURLConnection.HTTP_OK){
+                            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                            String line=in.readLine();
+                            msg=line != null ? line : "Unknown error";
+                        }
+                    }
+                    catch(Exception ex){
+                        ex.printStackTrace();
+                        msg = "Connection error";
+                    }
+                    jLabel2.setText(msg);
+        			jLabel2.setForeground(Color.GREEN);
         		}
         		catch (Exception ex) {
         			JOptionPane.showMessageDialog(null, "" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

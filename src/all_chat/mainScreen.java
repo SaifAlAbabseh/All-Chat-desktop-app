@@ -12,6 +12,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.awt.*;
 
 import javax.imageio.ImageIO;
@@ -21,6 +24,8 @@ import javax.swing.*;
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 import javax.swing.border.LineBorder;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 /**
  *
@@ -37,7 +42,7 @@ public class mainScreen extends javax.swing.JFrame {
 	private String password;
 	private ArrayList<String> arrOfFriends;
 	public static ArrayList<String> arrOfU1,arrOfU2;
-	private Timer t;
+	private ScheduledExecutorService scheduler;
 	private void setIcon() {
 		setIconImage(new ImageIcon(getClass().getResource("icon.png")).getImage());
 	}
@@ -53,14 +58,10 @@ public class mainScreen extends javax.swing.JFrame {
 		jLabel2.setText(username);
 		loadIMG();
 		loadFriends();
-		t = new Timer(1000, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				loadIMG();
-				loadFriends();
-			}
-		});
-		t.start();
+		scheduler = Executors.newScheduledThreadPool(5);
+		scheduler.scheduleWithFixedDelay(() -> {
+			loadIMG();
+        }, 0, 1, TimeUnit.SECONDS);
 	}
 
 	private String getIMG() {
@@ -88,7 +89,7 @@ public class mainScreen extends javax.swing.JFrame {
 	private void loadIMG() {
 		Image image = null;
 		String lastIMG = getIMG();
-		String imgurl = "http://localhost/" + Common.siteName + "/Extra/styles/images/users%20images/" + lastIMG + ".png";
+		String imgurl = DBInfo.siteName + "Extra/styles/images/users_images/" + lastIMG + ".png";
 		try {
 			URL url = new URL(imgurl);
 			image = ImageIO.read(url);
@@ -106,10 +107,12 @@ public class mainScreen extends javax.swing.JFrame {
 	private void loadFriends() {
 		friendsPanel = new JPanel();
 		friendsPanel.setBounds(0, 0, 319, 432);
-		jScrollPane1.getViewport().add(friendsPanel);
+		jScrollPane1.setViewportView(friendsPanel);
 		int howMany = getHowMany();
 		friendsPanel.setLayout(new GridLayout(howMany, 4));
 		showFriends();
+		friendsPanel.revalidate();
+		friendsPanel.repaint();
 	}
 
 	private void showFriends() {
@@ -142,7 +145,7 @@ public class mainScreen extends javax.swing.JFrame {
 
 				JLabel pic = new JLabel();
 				pic.setPreferredSize(new Dimension(50, 50));
-				String imgurl = "http://localhost/" + Common.siteName + "/Extra/styles/images/users%20images/" + result.getString(3) + ".png";
+				String imgurl = DBInfo.siteName + "Extra/styles/images/users_images/" + result.getString(3) + ".png";
 				Image image = null;
 				try {
 					URL url = new URL(imgurl);
@@ -169,7 +172,7 @@ public class mainScreen extends javax.swing.JFrame {
 					public void actionPerformed(ActionEvent e) {
 
 						dispose();
-						t.stop();
+						scheduler.shutdown();
 						new chatWithFriendScreen(username,password, "" + arrOfFriends.get(ii)).setVisible(true);;
 
 					}
@@ -243,6 +246,7 @@ public class mainScreen extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton3.setBorder(null);
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
 
@@ -304,7 +308,7 @@ public class mainScreen extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Logout");
-        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.blue, 2));
+        jButton1.setBorder(null);
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton1.setFocusable(false);
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -416,33 +420,51 @@ public class mainScreen extends javax.swing.JFrame {
         );
 
         jScrollPane1.setBackground(new java.awt.Color(102, 102, 102));
+        
+        btnNewButton = new JButton("Refresh");
+        btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btnNewButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		loadFriends();
+        	}
+        });
+        btnNewButton.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        btnNewButton.setBorder(null);
+        btnNewButton.setFocusable(false);
+        btnNewButton.setBackground(new Color(255, 0, 0));
+        btnNewButton.setForeground(new Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56))
+        	jPanel1Layout.createParallelGroup(Alignment.LEADING)
+        		.addComponent(jPanel2, GroupLayout.DEFAULT_SIZE, 737, Short.MAX_VALUE)
+        		.addGroup(jPanel1Layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(jPanel4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addGroup(jPanel1Layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(jPanel1Layout.createSequentialGroup()
+        					.addPreferredGap(ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+        					.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 319, GroupLayout.PREFERRED_SIZE)
+        					.addGap(56))
+        				.addGroup(jPanel1Layout.createSequentialGroup()
+        					.addGap(190)
+        					.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
+        					.addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(53, Short.MAX_VALUE))))
+        	jPanel1Layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(jPanel1Layout.createSequentialGroup()
+        			.addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addGroup(jPanel1Layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(jPanel1Layout.createSequentialGroup()
+        					.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.UNRELATED)
+        					.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 432, GroupLayout.PREFERRED_SIZE))
+        				.addComponent(jPanel4, GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE))
+        			.addContainerGap())
         );
+        jPanel1.setLayout(jPanel1Layout);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -461,13 +483,13 @@ public class mainScreen extends javax.swing.JFrame {
     private void goToAddFriendScreen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goToAddFriendScreen
         // TODO add your handling code here:
     	dispose();
-    	t.stop();
+    	scheduler.shutdown();
     	new addFriendScreen(username,password).setVisible(true);
     }//GEN-LAST:event_goToAddFriendScreen
     private void goToEditProfileScreen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goToEditProfileScreen
         // TODO add your handling code here:
     	try {
-    		Desktop.getDesktop().browse(new URI("http://localhost/" + Common.siteName + "/uploadPic.php?username="+username+"&password="+otherMethods.getMd5(password)+"&temp=javaToWeb1090"));
+    		Desktop.getDesktop().browse(new URI(DBInfo.siteName + "Mobile/uploadPic.php?username="+username+"&password="+otherMethods.getMd5(password)+"&temp=javaToWeb1090"));
     	} catch (IOException e) {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, ""+e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
@@ -562,7 +584,7 @@ public class mainScreen extends javax.swing.JFrame {
 		// TODO add your handling code here:
 		changeAva();
 		dispose();
-		t.stop();
+		scheduler.shutdown();
 		new loginScreen().setVisible(true);
 	}// GEN-LAST:event_logout
 
@@ -621,5 +643,5 @@ public class mainScreen extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    // End of variables declaration//GEN-END:variables
+    private JButton btnNewButton;
 }
